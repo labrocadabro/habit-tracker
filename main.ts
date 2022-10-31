@@ -8,23 +8,25 @@ form.addEventListener('submit', addHabit);
 habitContainer.addEventListener('click', updateDay)
 
 interface Habit {
-	[key: string]: string[];
+	name: string;
+	id: string;
+	dates: string[]
 }
-let habits: Habit = JSON.parse(localStorage.getItem('habits') || "{}");
-if (Object.keys(habits).length) {
-	Object.keys(habits).forEach(key => {
-	const habit = document.getElementById(key);
-	if (habit) {
-		const days = Array.from(habit.children) as HTMLDivElement[];
-		days.forEach(day => {
-			if (habits[key].includes(day.dataset.day!)) day.classList.add('done');
-		})
-	}
-});
-} else {
-	habits = {"habit1": [], "habit2": [], "habit3": []}
+let habits: Habit[] = JSON.parse(localStorage.getItem('habits') || "[]");
+if (habits.length) {
+	habits.forEach(habit => {
+		const habitEl = `
+			<h2>${habit.name}</h2>		
+			<div class="habit" id="habit-${habit.id}">
+				<div class="day day1 ${habit.dates.includes("1") ? "done" : ""}" data-day="1"></div>
+				<div class="day day2 ${habit.dates.includes("2") ? "done" : ""}" data-day="2"></div>
+				<div class="day day3 ${habit.dates.includes("3") ? "done" : ""}" data-day="3"></div>
+				<div class="day day4 ${habit.dates.includes("4") ? "done" : ""}" data-day="4"></div>
+				<div class="day day5 ${habit.dates.includes("5") ? "done" : ""}" data-day="5"></div>
+			</div>`;
+		habitContainer.innerHTML += habitEl;
+	});
 }
-
 
 days.forEach(day => {
 	const date = day.dataset.day!;
@@ -40,8 +42,15 @@ function updateDay(e: Event) {
 	const day = e.target as HTMLDivElement;
 	const date = day.dataset.day || "";
 	if (!day.classList.contains("day")) return;
-	const habit: string = day.parentElement!.id;
-	const dates = habits[habit];
+	const habitId: string = day.parentElement!.id;
+	console.log(habits)
+	const habit = habits.find(habit =>{ 
+		console.log(habit.id, habitId)
+		return habit.id === habitId
+	});
+	let dates: string[] = [];
+	if (habit) dates = habit.dates;
+	console.log(habit)
 	console.log(day.parentElement)
 	if (dates.includes(date)) {
 		const index = dates.indexOf(date);
@@ -49,6 +58,7 @@ function updateDay(e: Event) {
 	} else {
 		dates.push(date);
 	}
+	console.log(dates, habit!.dates)
 	localStorage.setItem('habits', JSON.stringify(habits));
 	day.classList.toggle('done');
 }
@@ -67,7 +77,7 @@ function addHabit(e: Event) {
 				<div class="day day4" data-day="4"></div>
 				<div class="day day5" data-day="5"></div>
 			</div>`;
-		habits[`habit-${habitId}`] = [];
+		habits.push({name: habitName, id: `habit-${habitId}`, dates: []});
 		localStorage.setItem('habits', JSON.stringify(habits));
 		habitContainer.innerHTML += newHabit;
 	}
