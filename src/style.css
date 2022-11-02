@@ -1,3 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+	.habit {
+		@apply grid grid-cols-5;
+	}
+	.day, date {
+		@apply h-6 w-6;
+	}
+	.day {
+		@apply bg-gray-200 border border-black;
+	}
+}
+
+
+/* 
 * {
 	box-sizing: border-box;
 }
@@ -47,4 +65,4 @@ h2 {
 .day.today:hover, .day.done {
 	background: green;
 	cursor: pointer;
-}
+} */

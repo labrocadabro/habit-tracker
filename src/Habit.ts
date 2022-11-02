@@ -1,23 +1,29 @@
 import { DateWithoutTime as DateWT }  from './DateWithoutTime.js';
 
 export class Habit {
+	private _id: string;
+	private _streak: number;
 	constructor(
 		public name: string,
-		public id: string,
 		private _dates: string[] = [],
-		private _streak: number = 0
-	) {}
+	) {
+		const id = "habit-" + this.name.toLowerCase().split(" ").join("-");
+		this._id = id;
+		this._streak = 0;
+	}
 	get streak() {
 		return this._streak;
 	}
 	get dates() {
 		return this._dates;
 	}
+	get id() {
+		return this._id;
+	}
 	addDate(dateStr: string) {
 		if (this._dates.includes(dateStr)) return;
 		const dateRegex = new RegExp(/^[1-9]\d{3}-((0[1-9])|(1[0-2]))-([0-2][1-9]|3[0-1])$/);
-		const date = new DateWT(dateStr);
-		if (date.toString() === "Invalid Date" || !dateRegex.test(dateStr)) {
+		if (new DateWT(dateStr).toString() === "Invalid Date" || !dateRegex.test(dateStr)) {
 			throw new Error('Invalid date');
 		}
 		const dates = this._dates;
