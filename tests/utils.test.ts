@@ -1,7 +1,17 @@
-import { describe, it, expect } from 'vitest';
-import { Habit } from '../src/habit.js';
+import { describe, it, expect, vi } from 'vitest';
+import { JSDOM } from 'jsdom';
 
+import { Habit } from '../src/habit.js';
+import { baseHTML } from '../src/base.js';
+import { localStorageMock } from "./localstorage.js";
 import * as utils from "../src/utils.js";
+
+
+const { window } = new JSDOM('<!doctype html><html><body></body></html>');
+global.window = window;
+global.document = window.document;
+Object.defineProperty(global, 'localStorage', {value: localStorageMock});
+
 
 describe('utils', () => {
 	describe("buildHabits", () => {
@@ -19,4 +29,20 @@ describe('utils', () => {
 		}); 
 
 	}); 
+	describe("addHabit", () => {
+		it('add a new habit to the DOM', () => {
+			document.querySelector('body')!.innerHTML = baseHTML; 
+			const habitContainer = document.getElementById('tracker') as HTMLDivElement;
+			let habitName = document.getElementById('new-habit-name') as HTMLInputElement;
+			habitName.value = "Test Habit";
+			const habits: Habit[] = [new Habit(habitName.value)];
+			utils.addHabit(habits, habitContainer);
+			expect(habitContainer).toContain(document.getElementById(`${habits[0].id}`));
+			const newHabit: Habit = JSON.parse(localStorage.getItem('habits') || "")[0];
+			expect(newHabit.name).toBe("Test Habit");
+			localStorage.clear();
+		});
+		
+	});
 });
+

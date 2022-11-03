@@ -22,7 +22,10 @@ window.addEventListener('DOMContentLoaded', () => utils.loadHabits(habits, habit
 
 
 
-form.addEventListener('submit', (e: Event) => utils.addHabit(e, habits, habitContainer));
+form.addEventListener('submit', (e: Event) => {
+	e.preventDefault();
+	utils.addHabit(habits, habitContainer)
+});
 
 
 // function addHabit(e: Event) {

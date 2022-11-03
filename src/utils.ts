@@ -27,8 +27,7 @@ export const loadHabits = (habits: Habit[], habitContainer: HTMLDivElement) => {
 	});
 }
 
-export const addHabit = (e: Event, habits: Habit[], habitContainer: HTMLDivElement) => {
-	e.preventDefault();
+export const addHabit = (habits: Habit[], habitContainer: HTMLDivElement) => {
 	const habitName = (document.getElementById('new-habit-name') as HTMLInputElement).value;
 	const habit = new Habit(habitName);
 	if (habitName.length) {
