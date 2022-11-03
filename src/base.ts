@@ -1,4 +1,5 @@
 export const baseHTML = `
+<p id="message"></p>
 <h1>Habit Tracker</h1>
 <form id="new-habit-form">
 	<label for="new-havit-name">Habit Name</label>

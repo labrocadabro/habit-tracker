@@ -17,28 +17,22 @@ export const loadHabits = (habits: Habit[], habitContainer: HTMLDivElement) => {
 		const habitEl = `
 			<h2>${habit.name}</h2>		
 			<div class="habit" id="habit-${habit.id}">
-				<div class="day day1 ${habit.dates.includes("1") ? "done" : ""}" data-day="1"></div>
-				<div class="day day2 ${habit.dates.includes("2") ? "done" : ""}" data-day="2"></div>
-				<div class="day day3 ${habit.dates.includes("3") ? "done" : ""}" data-day="3"></div>
-				<div class="day day4 ${habit.dates.includes("4") ? "done" : ""}" data-day="4"></div>
-				<div class="day day5 ${habit.dates.includes("5") ? "done" : ""}" data-day="5"></div>
 			</div>`;
 		habitContainer.innerHTML += habitEl;
 	});
 }
 
-export const addHabit = (habits: Habit[], habitContainer: HTMLDivElement) => {
-	const habitName = (document.getElementById('new-habit-name') as HTMLInputElement).value;
+export const addHabit = (habitName: string, habits: Habit[], habitContainer: HTMLDivElement) => {
 	const habit = new Habit(habitName);
+	if (habits.find(h => h.name === habitName)) {
+		// TODO: add error message to DOM
+		document.getElementById("message")!.innerText = "This habit already exists.";
+		return;
+	}
 	if (habitName.length) {
 		const newHabit = `
 			<h2>${habit.name}</h2>		
 			<div class="habit" id="${habit.id}">
-				<div class="day day1" data-day="1"></div>
-				<div class="day day2" data-day="2"></div>
-				<div class="day day3" data-day="3"></div>
-				<div class="day day4" data-day="4"></div>
-				<div class="day day5" data-day="5"></div>
 			</div>`;
 		habits.push(habit);
 		localStorage.setItem('habits', JSON.stringify(habits));

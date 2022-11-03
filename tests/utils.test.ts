@@ -33,16 +33,38 @@ describe('utils', () => {
 		it('add a new habit to the DOM', () => {
 			document.querySelector('body')!.innerHTML = baseHTML; 
 			const habitContainer = document.getElementById('tracker') as HTMLDivElement;
-			let habitName = document.getElementById('new-habit-name') as HTMLInputElement;
-			habitName.value = "Test Habit";
-			const habits: Habit[] = [new Habit(habitName.value)];
-			utils.addHabit(habits, habitContainer);
+			const habitName = "Test Habit";
+			const habits: Habit[] = [];
+			utils.addHabit(habitName, habits, habitContainer);
+
+			expect(habits).toEqual([new Habit(habitName)]);
 			expect(habitContainer).toContain(document.getElementById(`${habits[0].id}`));
 			const newHabit: Habit = JSON.parse(localStorage.getItem('habits') || "")[0];
 			expect(newHabit.name).toBe("Test Habit");
 			localStorage.clear();
 		});
-		
+		it('add a new habit when some already exist', () => {
+			document.querySelector('body')!.innerHTML = baseHTML;
+			const habitContainer = document.getElementById('tracker') as HTMLDivElement;
+			const habitName = "Test Habit";
+			const habits: Habit[] = [new Habit('First Habit')];
+			utils.addHabit(habitName, habits, habitContainer);
+
+			expect(habits).toEqual([new Habit("First Habit"), new Habit(habitName)]);
+			expect(habitContainer).toContain(document.getElementById(`${habits[1].id}`));
+			const newHabit: Habit = JSON.parse(localStorage.getItem('habits') || "")[1];
+			expect(newHabit.name).toBe("Test Habit");
+			localStorage.clear();
+		});
+		it('do not add a duplicate habit', () => {
+			document.querySelector('body')!.innerHTML = baseHTML;
+			const habitContainer = document.getElementById('tracker') as HTMLDivElement;
+			const habitName = "Test Habit";
+			const habits: Habit[] = [new Habit(habitName)];
+			utils.addHabit(habitName, habits, habitContainer);
+			expect(habits).toEqual([new Habit(habitName)]);
+			expect(document.getElementById("message")!.innerText).toBe("This habit already exists.");
+		});
 	});
 });
 
