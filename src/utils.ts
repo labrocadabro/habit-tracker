@@ -24,7 +24,7 @@ export const loadHabits = (habits: Habit[], habitContainer: HTMLDivElement) => {
 
 export const addHabit = (habitName: string, habits: Habit[], habitContainer: HTMLDivElement) => {
 	const habit = new Habit(habitName);
-	if (habits.find(h => h.name === habitName)) {
+	if (habits.find(h => h.isDuplicate(habitName))) {
 		// TODO: add error message to DOM
 		document.getElementById("message")!.innerText = "This habit already exists.";
 		return;

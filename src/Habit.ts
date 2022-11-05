@@ -7,8 +7,7 @@ export class Habit {
 		public name: string,
 		private _dates: string[] = [],
 	) {
-		const id = "habit-" + this.name.toLowerCase().split(" ").join("-");
-		this._id = id;
+		this._id = "habit-" + this.name.toLowerCase().split(" ").join("-");
 		this._streak = 0;
 	}
 	get streak() {
@@ -39,5 +38,9 @@ export class Habit {
 	removeDate(date: string) {
 		const index = this._dates.indexOf(date);
 		if (index !== -1) this._dates.splice(index, 1);
+	}
+	isDuplicate(name: string) {
+		const temp = new Habit(name);
+		return temp.id === this.id;
 	}
 }

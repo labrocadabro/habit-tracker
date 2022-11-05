@@ -10,11 +10,6 @@ export const baseHTML = `
 <section id="tracker" class="inline-grid grid-cols-2 justify-center items-center gap-2">
 	<h2></h2>
 	<div id="datesHeader" class="habit">
-		<div class="date">1</div>
-		<div class="date">2</div>
-		<div class="date">3</div>
-		<div class="date">4</div>
-		<div class="date">5</div>
 	</div>
 </section>
 `

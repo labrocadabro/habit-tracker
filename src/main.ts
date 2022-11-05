@@ -24,7 +24,8 @@ window.addEventListener('DOMContentLoaded', () => utils.loadHabits(habits, habit
 
 form.addEventListener('submit', (e: Event) => {
 	e.preventDefault();
-	utils.addHabit(habits, habitContainer)
+	const habitName = (document.getElementById('new-habit-name') as HTMLInputElement).value;
+	utils.addHabit(habitName, habits, habitContainer)
 });
 
 

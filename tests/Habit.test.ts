@@ -49,4 +49,15 @@ describe("Habits", () => {
 			expect(habit.dates).toEqual(['2022-03-19']);
 		});
 	});
+		describe('isDuplicate', () => {
+		it('habit is duplicate', () => {
+			const habit = new Habit ('Habit');
+			expect(habit.isDuplicate('Habit')).toBe(true);
+		});
+
+		it('habit is not duplicate', () => {
+			const habit = new Habit ('Habit');
+			expect(habit.isDuplicate('Another Habit')).toBe(false);
+		});
+	});
 });
