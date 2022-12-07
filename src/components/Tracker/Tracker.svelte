@@ -1,9 +1,12 @@
 <script lang="ts">
-export let habitName: string;
+  import HabitContainer from "../Habit/HabitConatiner.svelte";
+
+export let habitNames: string[];
 </script>
 
 <section id="tracker" class="inline-grid grid-cols-2 justify-center items-center gap-2">
-	<h2>{habitName}</h2>
-	<div id="datesHeader" class="habit">
-	</div>
+	<div id="datesHeader" class="habit"></div>
+	{#each habitNames as habit (habit)}
+	<HabitContainer {habit} />
+	{/each}
 </section>
